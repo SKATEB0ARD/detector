@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'me.brennan'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    shaded
+
+    compile.extendsFrom shaded
+}
+
+dependencies {
+    shaded 'org.ow2.asm:asm-all:5.2'
+}
+
+shadowJar {
+    configurations = [project.configurations.shaded]
+}
+
+build {
+    dependsOn shadowJar
+}
+
+jar {
+    manifest {
+        attributes("Main-Class": "Main")
+    }
+}
